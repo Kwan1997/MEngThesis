@@ -1,0 +1,35 @@
+%# -*- coding:utf-8 -*-
+\pagenumbering{Roman} %定义页码格式为罗马字母
+\begin{cabstract}
+    无监督特征选择与提取是现代数据分析不可或缺的一部分。尽管经过二十余年的发展，这些技术已经较为成熟，但它们仍在一些方面存有改进空间。例如，几乎所有现有的无监督特征选择方法都是基于矩阵优化的，而这样的框架损失了张量型数据内在的结构信息；许多现有的基于张量优化的无监督特征提取方法都没有内置的抗噪声机制，而这将导致它们在面对不确定数据时的性能退化。为了突破上述限制，本文提出了新颖且有效的基于张量优化的无监督特征选择与鲁棒特征提取方法。具体贡献如下：
+    \begin{enumerate}[wide]
+        \item 对于无监督特征选择任务，本文首先提出了基于非负张量CANDECOMP/\linebreak PARAFAC（CP）分解的无监督特征选择方法（Nonnegative Tensor CP Decom-position-Based Unsupervised Feature Selection, CPUFS）。CPUFS方法开创性地采用了张量CP分解来生成数据伪标签，并设计了崭新的面向张量的线性分类器、特征选择矩阵以及基于$\ell_{2,1}$范数和Khatri-Rao积的特征选择机制来进行特征选择，从而能够在整个无监督特征选择的过程中都全然保留张量的结构信息。
+        % 这在本文作者的知识体系内是前所未有的。
+        在CPUFS方法的基础上，本文还提出了一个对其线性分类器施加非负约束的变体，将其推广到了更高阶形式。
+        % 本文还提出了基于非负张量CP分解的非负无监督特征选择方法（Nonnegative Tensor CP Decomposition-Based Nonnegative Unsupervised Feature Selection, CPUFSnn）。CPUFSnn方法在CPUFS方法的基础上为线性分类器施加了非负约束，从而能进一步利用数据的非负特性提升特征选择的性能。
+        \item 对于无监督特征提取任务，本文分别提出了基于$\ell_{1}$范数和$\ell_{\infty}$范数的鲁棒张量Tucker分解的两种方法（$\ell_{1}$方法和$\ell_{\infty}$方法）。$\ell_{1}$方法将所有数据样本的Tucker分解拟合误差之和作为其目标函数，从而在一定程度上抑制了数据中的噪声及离群点所带来的负面影响。$\ell_{\infty}$方法将所有数据样本的最大Tucker分解拟合误差作为其目标函数，从而更进一步地提升了在噪声环境下的特征提取的鲁棒性。
+    \end{enumerate}
+    
+    对于这些提出的方法，本文分别研发了高效的优化算法，并从理论上进行了收敛性与计算复杂度分析。在大量真实世界基准数据集上进行了广泛且丰富的实验，实验结果表明所提出方法比前沿方法更具优越性和有效性。
+    
+\keywords{\mbox{特征选择；特征提取；张量计算；最优化理论；算法设计}}
+\end{cabstract}
+
+\begin{eabstract}
+% \setstretch{1.0}
+Unsupervised feature selection and extraction are vital and indispensable parts of modern data analytics. Although these techniques have been well developed in the recent two decades, there is still room for improvement. As examples, almost all existing unsupervised feature selection methods are matrix optimization-based, which destroy the multi-dimensional structure of tensor data; many existing tensor optimization-based unsupervised feature extraction methods do not admit built-in anti-corruption mechanisms, leading to poor performance under noisy environments. To dismiss the above-mentioned limitations, this dissertation proposes novel and effective tensor optimization-based unsupervised feature selection and robust extraction methods. The main contributions of the dissertation are summarized as follows:
+\begin{enumerate}[wide]
+    \item For unsupervised feature selection, this dissertation first proposes the Nonnegative Tensor CANDECOMP/PARAFAC (CP) Decomposition-Based Unsupervised Feature Selection (CPUFS) method. Specifically, CPUFS innovatively adopts the nonnegative tensor CP decomposition to generate pseudo-labels for data, and designs new tensor-oriented linear classifier, feature selection matrix and $\ell_{2,1}$-norm- and Khatri-Rao product-based feature selection mechanism to perform feature selection.
+    % , which are unprecedented to the best of the author's knowledge.
+    As a result, CPUFS is capable to preserve the structural information of tensor data in the whole feature selection process. 
+    In addition, this dissertation proposes a variant of CPUFS which imposes nonnegativity constraints on the linear classifier, and also extends CPUFS to higher-order cases.
+    % the Nonnegative Tensor CP Decomposition-Based Nonnegative Unsupervised Feature Selection (CPUFSnn) method. On top of CPUFS, CPUFSnn imposes additional nonnegativity constraints on the linear classifier so as to further improve the performance of feature selection by exploiting the nonnegative nature of data.
+    
+    \item For unsupervised feature extraction, this dissertation proposes two robust nonnegative tensor Tucker decomposition methods based on $\ell_{1}$-norm and $\ell_{\infty}$-norm respectively ($\ell_{1}$ and $\ell_{\infty}$ method). The $\ell_{1}$ method computes the sum of fitting errors of Tucker decomposition of all data samples as its objective function, so as to impair the negative effects caused by noise and outliers in data. Furthermore, the $\ell_{\infty}$ method computes the largest fitting error of Tucker decomposition among all data samples as its objective function, so as to further increase the robustness of feature extraction under noisy environments.
+\end{enumerate}
+For these proposed methods, efficient optimization algorithms are respectively developed, and theoretical analyses on their convergence and computational complexity are also conducted. Extensive and comprehensive experiments are performed on a variety of real-world benchmark datasets, in comparison with the state-of-the-arts, and the results demonstrate the superiority and effectiveness of the proposals.
+
+\ekeywords{Feature Selection; Feature Extraction; Tensor Computation; Optimization Theory; Algorithm Design}
+\end{eabstract}
+
+% [wide, labelwidth=!, labelindent=0pt]

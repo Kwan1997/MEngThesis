@@ -1,0 +1,379 @@
+%# -*- coding:utf-8 -*-
+\usepackage{ctex}
+\usepackage{geometry}
+% \usepackage{float} %图片浮动
+%\usepackage[section]{placeins} %避免浮动体跨过 \section
+\usepackage{placeins}
+\usepackage{array}
+\usepackage{setspace} %设置间距
+\usepackage{fontspec} %设置字体库
+\usepackage{zhnumber}
+\usepackage{indentfirst} %设置第一段首行缩进
+
+\setmainfont{Times New Roman} %设置西文字体
+\setCJKmainfont{simsun.ttc}[AutoFakeBold] %设置中文字体
+\geometry{a4paper,top=2.54cm,bottom=2.54cm,left=3.17cm,right=3.17cm,head=1.57cm,foot=1.5cm}
+
+%对齐格式
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}}
+\newcolumntype{R}[1]{>{\PreserveBackslash\raggedleft}p{#1}}
+\newcolumntype{L}[1]{>{\PreserveBackslash\raggedright}p{#1}}
+% Added by Jiewen Guan
+\usepackage{zhlipsum}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{diagbox}
+% \usepackage[hang,flushmargin]{footmisc}
+% \usepackage[utf8]{inputenc} % allow utf-8 input
+% \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\def\UrlBreaks{\do\/\do-\do:}
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{subfig}
+\usepackage[inline]{enumitem}
+\usepackage{kantlipsum}
+% \usepackage[table,xcdraw]{xcolor}
+\usepackage{rotating}
+\usepackage{systeme}
+% \usepackage{MnSymbol}
+
+\DeclareMathOperator{\di}{d\!}
+\newcommand*\Eval[3]{\left.#1\right\rvert_{#2}^{#3}}
+\newcommand*\inlineEval[3]{#1\vert_{#2}^{#3}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
+\newcommand{\parenth}[1]{\left(#1\right)}
+\newcommand{\tr}[1]{\operatorname{Tr}\left(#1\right)}
+\newcommand{\Hquad}{\hspace{0.5em}}
+\def\equationautorefname~#1\null{Eq.~(#1)\null}
+\newcommand{\algorithmautorefname}{Algorithm}
+\renewcommand{\algorithmicrequire}{\textbf{输入:}}
+\renewcommand{\algorithmicensure}{\textbf{输出:}}
+\renewcommand{\algorithmicreturn}{\textbf{返回}}
+\floatname{algorithm}{\textbf{算法}}
+\renewcommand{\figureautorefname}{Fig.}
+\newcommand{\subfigureautorefname}{\figureautorefname}
+\renewcommand{\sectionautorefname}{Section}
+\renewcommand{\subsectionautorefname}{Section}
+\renewcommand{\subsubsectionautorefname}{Section}
+\renewcommand{\chapterautorefname}{Chapter}
+\newcommand{\mydiag}{\gamma\operatorname{-diag}}
+\newcommand{\reftab}[1]{\hyperref[#1]{表\ref*{#1}}}
+\newcommand{\refequation}[1]{\hyperref[#1]{公式(\ref*{#1})}}
+\newcommand{\refalg}[1]{\hyperref[#1]{算法\ref*{#1}}}
+\newcommand{\refopt}[1]{\hyperref[#1]{问题(\ref*{#1})}}
+\newcommand{\reftheorem}[1]{\hyperref[#1]{定理\ref*{#1}}}
+\newcommand{\refremark}[1]{\hyperref[#1]{评注\ref*{#1}}}
+\newcommand{\reflemma}[1]{\hyperref[#1]{引理\ref*{#1}}}
+\graphicspath{ {./images/} }
+\newcommand{\refdiscussion}[1]{\hyperref[#1]{讨论\ref*{#1}}}
+\newcommand{\refchapter}[1]{\hyperref[#1]{第\ref*{#1}章}}
+\newcommand{\refsection}[1]{\hyperref[#1]{第\ref*{#1}节}}
+% \newcommand{\refetheorem}[1]{\hyperref[#1]{Theorem~\ref*{#1}}}
+\usepackage{stmaryrd}
+\usepackage{cancel}
+\usepackage{ulem}
+\usepackage{makecell}
+\newcommand{\blue}[1]{\textcolor{black}{#1}}
+\newcommand{\chen}[1]{\blue{#1}}
+\newcommand{\guan}[1]{\blue{#1}}
+% \newtheoremstyle{mydef}% name
+%   {\topsep}% space above
+%   {\topsep}% space below
+%   {}% body font
+%   {}% indent amount
+%   {\itshape}% theorem head font
+%   {.}% punctuation after theorem head
+%   {.5em}% space after theorem head
+%   {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}% theorem head spec
+% \newtheorem{theorem}{\normalfont\scshape Theorem}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{definition}{定义}[section]
+\newtheorem{lemma}{引理}[section]
+\newtheorem{corollary}{推论}[section]
+\newtheorem{remark}{评注}[section]
+\newtheorem{discussion}{讨论}[section]
+\newtheorem{example}{例}[section]
+\renewenvironment{proof}{{\noindent \bfseries 证明.}}{\qed}
+% Added by Jiewen Guan
+
+\usepackage{calc}\newcommand{\chinesedash}{\rule[.7ex]{\widthof{二字}}{0.5pt}}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usetikzlibrary{3d}
+\usetikzlibrary{calc, shadings} 
+\usetikzlibrary{positioning,arrows.meta}
+\usetikzlibrary{trees}
+\tikzstyle{every node}=[draw=black,thick,anchor=west, minimum height=2.5em]
+\usepgfplotslibrary{fillbetween}
+\newcommand{\epi}{\operatorname{epi}}
+\newcommand{\reftikz}[1]{\hyperref[#1]{图\ref*{#1}}}
+\newcommand{\reffig}[1]{\hyperref[#1]{图\ref*{#1}}}
+\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
+
+% This is cuboid codes.
+\makeatletter
+\def\tikz@lib@cuboid@get#1{\pgfkeysvalueof{/tikz/cuboid/#1}}
+
+\def\tikz@lib@cuboid@setup{%
+   \pgfmathsetlengthmacro{\vxx}%
+      {\tikz@lib@cuboid@get{xscale}*cos(\tikz@lib@cuboid@get{xangle})*1cm}
+   \pgfmathsetlengthmacro{\vxy}%
+      {\tikz@lib@cuboid@get{xscale}*sin(\tikz@lib@cuboid@get{xangle})*1cm}
+   \pgfmathsetlengthmacro{\vyx}%
+      {\tikz@lib@cuboid@get{yscale}*cos(\tikz@lib@cuboid@get{yangle})*1cm}
+   \pgfmathsetlengthmacro{\vyy}%
+      {\tikz@lib@cuboid@get{yscale}*sin(\tikz@lib@cuboid@get{yangle})*1cm}
+   \pgfmathsetlengthmacro{\vzx}%
+      {\tikz@lib@cuboid@get{zscale}*cos(\tikz@lib@cuboid@get{zangle})*1cm}
+   \pgfmathsetlengthmacro{\vzy}%
+      {\tikz@lib@cuboid@get{zscale}*sin(\tikz@lib@cuboid@get{zangle})*1cm}
+}
+
+\def\tikz@lib@cuboid@draw#1--#2--#3\pgf@stop{%
+    \begin{scope}[join=bevel,x={(\vxx,\vxy)},y={(\vyx,\vyy)},z={(\vzx,\vzy)}]
+       % first fill the faces with global and individual style
+       % then draw the grids
+       \begin{scope}[canvas is yz plane at x=#1]
+          \draw[cuboid/all faces,cuboid/edges,cuboid/right face] 
+                (0,0) -- ++(#2,0) -- ++(0,-#3) -- ++(-#2,0) -- cycle;
+          \draw[cuboid/all grids,cuboid/right grid] (0,0) grid (#2,-#3);
+       \end{scope}
+       \begin{scope}[canvas is xy plane at z=0]
+          \draw[cuboid/all faces,cuboid/edges,cuboid/front face] 
+                (0,0) -- ++(#1,0) --  ++(0,#2) -- ++(-#1,0) -- cycle;
+          \draw[cuboid/all grids,cuboid/front grid] (0,0) grid (#1,#2);
+       \end{scope}
+       \begin{scope}[canvas is xz plane at y=#2]
+          \draw[cuboid/all faces,cuboid/edges,cuboid/top face] 
+                (0,0) -- ++(#1,0) --  ++(0,-#3) -- ++(-#1,0) -- cycle;
+          \draw[cuboid/all grids,cuboid/top grid] (0,0) grid (#1,-#3);
+       \end{scope}
+       % now, draw the hidden edges
+       \draw[cuboid/hidden edges] (0,#2,-#3) -- (0,0,-#3) -- (0,0,0) 
+                (0,0,-#3) -- ++(#1,0,0);
+       % finally, draw the visible edges 
+       \begin{scope}[canvas is yz plane at x=#1]
+          \draw[cuboid/all faces,cuboid/right face,cuboid/edges,fill opacity=0] 
+                (0,0) -- ++(#2,0) -- ++(0,-#3) -- ++(-#2,0) -- cycle;
+       \end{scope}
+       \begin{scope}[canvas is xy plane at z=0]
+          \draw[cuboid/all faces,cuboid/front face,cuboid/edges,fill opacity=0] 
+                (0,0) -- ++(#1,0) --  ++(0,#2) -- ++(-#1,0) -- cycle;
+       \end{scope}
+       \begin{scope}[canvas is xz plane at y=#2]
+          \draw[cuboid/all faces,cuboid/top face,cuboid/edges,fill opacity=0] 
+                (0,0) -- ++(#1,0) --  ++(0,-#3) -- ++(-#1,0) -- cycle;
+       \end{scope}
+       % define the anchors: 8 vertices
+       \path (0,#2,0) coordinate (-left top front)
+                      coordinate (-left front top)
+                      coordinate (-top left front)
+                      coordinate (-top front left)
+                      coordinate (-front top left)
+                      coordinate (-front left top);
+       \path (0,#2,-#3) coordinate (-left top rear)
+                        coordinate (-left rear top)
+                        coordinate (-top left rear)
+                        coordinate (-top rear left)
+                        coordinate (-rear top left)
+                        coordinate (-rear left top);
+       \path (0,0,-#3) coordinate (-left bottom rear)
+                       coordinate (-left rear bottom)
+                       coordinate (-bottom left rear)
+                       coordinate (-bottom rear left)
+                       coordinate (-rear bottom left)
+                       coordinate (-rear left bottom);
+       \path (0,0,0) coordinate (-left bottom front)
+                     coordinate (-left front bottom)
+                     coordinate (-bottom left front)
+                     coordinate (-bottom front left)
+                     coordinate (-front bottom left)
+                     coordinate (-front left bottom);
+       \path (#1,#2,0) coordinate (-right top front)
+                       coordinate (-right front top)
+                       coordinate (-top right front)
+                       coordinate (-top front right)
+                       coordinate (-front top right)
+                       coordinate (-front right top);
+       \path (#1,#2,-#3) coordinate (-right top rear)
+                         coordinate (-right rear top)
+                         coordinate (-top right rear)
+                         coordinate (-top rear right)
+                         coordinate (-rear top right)
+                         coordinate (-rear right top);
+       \path (#1,0,-#3) coordinate (-right bottom rear)
+                        coordinate (-right rear bottom)
+                        coordinate (-bottom right rear)
+                        coordinate (-bottom rear right)
+                        coordinate (-rear bottom right)
+                        coordinate (-rear right bottom);
+       \path (#1,0,0) coordinate (-right bottom front)
+                      coordinate (-right front bottom)
+                      coordinate (-bottom right front)
+                      coordinate (-bottom front right)
+                      coordinate (-front bottom right)
+                      coordinate (-front right bottom);
+       % centers of the 6 faces
+       \coordinate (-left center) at (0,.5*#2,-.5*#3);
+       \coordinate (-right center) at (#1,.5*#2,-.5*#3);
+       \coordinate (-top center) at (.5*#1,#2,-.5*#3);
+       \coordinate (-bottom center) at (.5*#1,0,-.5*#3);
+       \coordinate (-front center) at (.5*#1,.5*#2,0);
+       \coordinate (-rear center) at (.5*#1,.5*#2,-#3);
+       % center of the cuboid
+       \coordinate (-center) at (.5*#1,.5*#2,-.5*#3);
+       % centers of the 12 edges
+       \path (0,#2,-.5*#3) coordinate (-left top center) 
+                           coordinate (-top left center);
+       \path (.5*#1,#2,-#3) coordinate (-top rear center)
+                            coordinate (-rear top center);
+       \path (#1,#2,-.5*#3) coordinate (-right top center)
+                            coordinate (-top right center);
+       \path (.5*#1,#2,0) coordinate (-top front center)
+                          coordinate (-front top center);
+       \path (0,0,-.5*#3) coordinate (-left bottom center) 
+                           coordinate (-bottom left center);
+       \path (.5*#1,0,-#3) coordinate (-bottom rear center)
+                            coordinate (-rear bottom center);
+       \path (#1,0,-.5*#3) coordinate (-right bottom center)
+                            coordinate (-bottom right center);
+       \path (.5*#1,0,0) coordinate (-bottom front center)
+                          coordinate (-front bottom center);
+       \path (0,.5*#2,0) coordinate (-left front center) 
+                           coordinate (-front left center);
+       \path (0,.5*#2,-#3) coordinate (-left rear center)
+                            coordinate (-rear left center);
+       \path (#1,.5*#2,0) coordinate (-right front center)
+                            coordinate (-front right center);
+       \path (#1,.5*#2,-#3) coordinate (-right rear center)
+                          coordinate (-rear right center);
+    \end{scope}
+}
+
+\tikzset{
+  pics/cuboid/.style = {
+    setup code = \tikz@lib@cuboid@setup,
+    background code = \tikz@lib@cuboid@draw#1\pgf@stop
+  },
+  pics/cuboid/.default={1--1--1},
+  cuboid/.is family,
+  cuboid,
+  all faces/.style={fill=white},
+  all grids/.style={draw=none},
+  front face/.style={},
+  front grid/.style={},
+  right face/.style={},
+  right grid/.style={},
+  top face/.style={},
+  top grid/.style={},
+  edges/.style={},
+  hidden edges/.style={draw=none},
+  xangle/.initial=0,
+  yangle/.initial=90,
+  zangle/.initial=210,
+  xscale/.initial=1,
+  yscale/.initial=1,
+  zscale/.initial=0.5
+}
+
+\newcommand{\tikzcuboidreset}{
+\tikzset{cuboid,
+  all faces/.style={fill=white},
+  all grids/.style={draw=none},
+  front face/.style={},
+  front grid/.style={},
+  right face/.style={},
+  right grid/.style={},
+  top face/.style={},
+  top grid/.style={},
+  edges/.style={},
+  hidden edges/.style={draw=none},
+  xangle=0,
+  yangle=90,
+  zangle=210,
+  xscale=1,
+  yscale=1,
+  zscale=0.5
+}
+}
+
+\newcommand{\tikzcuboidset}{\@ifstar\tikzcuboidset@star\tikzcuboidset@nostar} 
+\newcommand{\tikzcuboidset@nostar}[1]{\tikzcuboidreset\tikzset{cuboid,#1}}
+\newcommand{\tikzcuboidset@star}[1]{\tikzset{cuboid,#1}}
+\makeatother
+
+% This is cuboid codes.
+
+\renewcommand*\thesubfigure{\arabic{subfigure}} 
+
+% \newcommand*{\Scale}[2][4]{\scalebox{#1}{\ensuremath{#2}}}
+\usepackage{relsize}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\usepackage{wrapfig}
+
+\newcommand\xqed[1]{%
+  \leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill
+  \quad\hbox{#1}}
+\newcommand\demo{\xqed{$\triangle$}}
+
+\usepackage{appendix}
+\usepackage{chngcntr}
+\usepackage{printlen}
+\usepackage{diagbox}
+
+% header
+% \usepackage{fancyhdr}
+% \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+% \renewcommand{\sectionmark}[1]{\markright{#1}}
+% \pagestyle{fancy}
+% \fancyhf{}
+% \fancyhead[LE,RO]{\thepage}
+% \fancyhead[LO]{\itshape\nouppercase{\rightmark}}
+% \fancyhead[RE]{\itshape\nouppercase{\leftmark}}
+% % \renewcommand{\headrulewidth}{0pt}
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{patterns.meta}
+\newcommand{\XinEat}[1]{}
+
+% \setlength{\parskip}{1.5em}
+\setlength{\parskip}{0pt}
+% \setlist[itemize]{noitemsep, topsep=2pt}
+% \setlist[enumerate]{noitemsep, topsep=2pt}
+% \setlist[itemize]{noitemsep}
+% \setlist[enumerate]{noitemsep}
+\setlist[itemize]{itemsep=0pt}
+\setlist[enumerate]{itemsep=0pt}
+% \allowdisplaybreaks
+% \usepackage{widows-and-orphans}
+% \predisplaypenalty=150
+% \displaywidowpenalty=10000
+% \setlength{\abovedisplayskip}{-1em}
+% \setlength{\belowdisplayskip}{-1em}
+% \setlength{\abovedisplayshortskip}{-1em}
+% \setlength{\belowdisplayshortskip}{-1em}
+
+
+\hypersetup{hidelinks}
+\usepackage{pdfpages}

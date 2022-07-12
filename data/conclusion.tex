@@ -1,0 +1,70 @@
+%# -*- coding:utf-8 -*-
+\chapter{总结与展望}\label{chap:conc}
+\echapter{Conclusion and Future Work}
+
+\section{本文总结}
+\esection{Conclusion of the Dissertation}
+
+% \subsection{无监督特征选择部分}
+% \esubsection{Part I: Unsupervised Feature Selection}
+本文面向无监督特征选择任务提出了一种基于张量优化的方法CPUFS。与现有的无监督特征选择方法不同，CPUFS方法考虑并保留了张量的结构信息。为了求解CPUFS方法，本文设计了一种高效的交替迭代优化算法，并建立了它的理论收敛性保证。此外，本文还从理论上证明了所提出的优化算法的计算复杂度与数据中的特征个数仅呈线性关系，而这保证了整个特征选择过程的效率。此外，本文还提出并研究了CPUFS方法的变体CPUFSnn，其对线性分类器的参数矩阵施加了非负约束，并且本文基于CPUFS方法的优化算法及其理论分析也为CPUFSnn方法设计了优化算法并进行了理论分析。本文在十个真实世界的基准数据集中进行了综合的实验，并且实验结果表明，CPUFS和CPUFSnn方法优于前沿的无监督特征选择方法。此外，本文还通过大量实验测试了CPUFS方法的参数灵敏度并经验地分析了CPUFS方法的运行效率和收敛速度。值得一提的是，CPUFS方法可以被很容易地扩展到更高阶形式。
+
+% \subsection{无监督特征提取部分}
+% \esubsection{Part II: Unsupervised Feature Extraction}
+除上述贡献外，面向无监督特征提取任务，本文还提出了两种分别基于$\ell_{1}$和$\ell_{\infty}$范数的鲁棒张量Tucker分解方法，用以在具有噪声与离群点的数据中进行鲁棒特征提取。受到机器学习理论以及相关工作的启发，$\ell_1$方法旨在优化所有数据样本中的Tucker分解拟合误差之和以缓和数据不确定性所带来的负面影响。受到鲁棒优化理论的启发，$\ell_\infty$方法旨在优化所有数据样本中的最大Tucker分解拟合误差以进一步增强在带噪声环境下的特征提取的鲁棒性。为了求解所提出的$\ell_1$与$\ell_\infty$方法，本文基于二阶锥规划理论为它们设计了有效的交替迭代优化算法，并建立了它们的理论收敛性保证以及进行了理论计算复杂度分析。本文在三个真实世界的基准数据集上设计了大量人工生成的噪声场景，并在不同噪声场景下进行了综合的实验。实验结果表明，与同类型的$\ell_2$方法以及其它经典的无监督特征提取方法相比，$\ell_\infty$方法的性能优异，提升显著，而$\ell_1$方法也能在某些数据集上展现不俗的效果。此外，本文还通过大量实验测试了$\ell_1$与$\ell_\infty$方法的运行效率以及$\ell_\infty$方法的收敛速度。
+
+\section{未来研究方向}
+\esection{Future Research Directions}
+基于本文所做的研究工作，本节给出如下的未来研究方向：
+\begin{enumerate}
+    \item \textbf{赋予CPUFS方法处理带缺失值数据的能力：}在一些真实世界的场景中，数据可能是不完整的。例如，这可能由数据收集不当或受到故意的数据污染导致。但是，如果直接将CPUFS方法应用于这些情形可能会导致效果不佳，这是因为其并没有用于处理缺失数据的内置机制，而这将导致其性能劣化。一种可能的解决方案是将缺失值估计机制融合进CPUFS方法。例如，可以采用文献\ucite{2019TDVM}中的策略，即引入额外的优化变量$\mathbfcal{Z}$来代替$\mathbfcal{X}$在目标函数中的位置，并施加额外的等式约束迫使$\mathbfcal{X}$和$\mathbfcal{Z}$在$\mathbfcal{X}$不缺失的索引处相等。具体来讲，上述提案即如下优化模型
+\begin{equation*}\vspace{-0.5em}
+    \begin{aligned}
+    & \underset{\smash[b]{\substack{\mathclap{\boldsymbol{A},\boldsymbol{B},\boldsymbol{C}}\\\mathclap{\boldsymbol{U},\boldsymbol{V},\boldsymbol{Y},\mathbfcal{Z}}}}}{\min}
+    & &  \norm{\mathbfcal{Z}-\left\llbracket \boldsymbol{A}, \boldsymbol{B}, \boldsymbol{C} \right\rrbracket}_{F}^{2} + \nu\operatorname{Tr}\left(\boldsymbol{C}^{\top}\boldsymbol{L}\boldsymbol{C}\right) \\ \span&& + \alpha\norm{\left(\mydiag\left(\mathbfcal{Z}\times_{1}\boldsymbol{U}\times_{2}\boldsymbol{V}\right)\right)^{\top} - \boldsymbol{C}}_{F}^{2} + \beta \norm{\boldsymbol{U}^{\top}\odot\boldsymbol{V}^{\top}}_{2,1}\\
+    & \text{s.t.}
+    & & \boldsymbol{A}\in \mathbb{R}_{+}^{n_1 \times c},~\boldsymbol{B}\in \mathbb{R}_{+}^{n_2 \times c},~\boldsymbol{C}\in \mathbb{R}_{+}^{n \times c},\\
+    \span &&\boldsymbol{C}=\boldsymbol{Y}\left(\boldsymbol{Y}^{\top} \boldsymbol{Y}\right)^{-\frac{1}{2}},~\boldsymbol{Y}\in\{0,1\}^{n\times c},~ x_{i j k}=z_{i j k},~\forall~ (i,j,k)\in\mathcal{M},
+    \end{aligned}
+\end{equation*}
+其中$\mathcal{M}\in\mathbb{N}^{3}$为指标集，指示了$\mathbfcal{X}$中的值不缺失处的索引，而其它符号的意义均与\refsection{sec:opt-model-CPUFS}中相同。
+    \item \textbf{研发新型的基于张量优化的无监督特征选择方法：}基于本文所设计的面向张量的线性分类器以及特征选择矩阵，可以很容易地将各种基于矩阵优化的无监督特征选择方法拓展到张量形式。例如，基于SOGFS\ucite{sogfs}中自适应图学习的观点，可以使用多个子空间投影矩阵来将原始数据投影至低维张量子空间并保留其内在结构，然后使用基于张量的度量（如张量Frobenius范数诱导的度量）来建立自适应图。基于这种思路的无监督特征选择方法的优化模型如下
+\begin{equation*}\vspace{-0.5em}
+\hspace{1em}
+\begin{aligned}
+& \underset{\smash[b]{\substack{\mathclap{\boldsymbol{S},\boldsymbol{C},\{\boldsymbol{U}_{i}\}_{i=1}^{d}}}}}{\min}\qquad
+& &  \sum_{i,j=1}^{n}\left(\norm{\left(\mathbfcal{X}^{(i)}-\mathbfcal{X}^{(j)}\right)\times_{1}\boldsymbol{U}_{1}\times_{2}\boldsymbol{U}_{2}\times_{3}\ldots\times_{d}\boldsymbol{U}_{d}}_{F}^{2}s_{i j}+\alpha s_{i j}^{2}\right) \\\span&&+ \lambda\operatorname{Tr}\left(\boldsymbol{C}^{\top}\boldsymbol{L}_{\boldsymbol{S}}\boldsymbol{C}\right) + \gamma \norm{\boldsymbol{U}_{1}^{\top}\odot\boldsymbol{U}_{2}^{\top}\odot\ldots\odot\boldsymbol{U}_{d}^{\top}}_{2,1}\\
+& \text{s.t.}
+& & \boldsymbol{S}\boldsymbol{1}_{n}=\boldsymbol{1}_{n},~\boldsymbol{S}\in[0,1]^{n\times n},~\boldsymbol{C}^{\top}\boldsymbol{C}=\boldsymbol{I}_{c},~\boldsymbol{U}_{i}\boldsymbol{U}_{i}^{\top}=\boldsymbol{I}_{m},~\forall~i\in[d],
+\end{aligned}
+\end{equation*}
+其中$\boldsymbol{L}_{\boldsymbol{S}}$为自适应相似度图$\boldsymbol{S}$所对应的拉普拉斯矩阵，$m$为低维张量子空间的维度，$\alpha$、$\lambda$以及$\gamma$为控制目标函数中不同项重要性大小的超参数，而其它符号的意义均与\refsection{sec:CPUFS-extend}中一致。除此之外，还有很多很多其它方法可以被拓展到张量形式。由于思路大体类似，故不再赘述具体做法。
+% 我们推测我们的工作或将掀起基于张量优化的无监督特征选择的热潮。
+    \item \textbf{为\texorpdfstring{$\ell_\infty$}{L无穷}方法添加合适的正则项：}值得注意的是，$\ell_\infty$方法只是简单的骨架方法。细心的读者可能已经注意到了，$\ell_\infty$方法并没有任何参数需要调整。这是由于$\ell_\infty$方法并不涉及任何正则项。那么，很自然的未来研究方向便是如何向$\ell_\infty$方法添加合适的正则项，并开发高效算法进行求解。例如，作为简单的例子，可以向$\ell_\infty$方法中添加图正则\ucite{cai2010graph,2016MR-NTD}（请参考\refsection{sec:graphreg}），从而使得$\ell_\infty$方法可以进一步捕捉到数据的局部几何结构信息，并由此来进一步提升无监督特征提取的效果。具体来讲，这种思想可以被建模成如下的优化模型
+\begin{equation*}
+\hspace{1em}
+    \begin{aligned}
+    &\underset{\smash[b]{\mathclap{\{\mathbfcal{G}^{(i)}\}_{i=1}^{n},\{\boldsymbol{A}^{(j)}\}_{j=1}^{d}}}}{\min}\qquad\quad &&\underset{\mathclap{k\in\{1,2,\ldots,n\}}}{\max}\quad \left\|\mathbfcal{X}^{(k)}-\mathbfcal{G}^{(k)} \times_{1} \boldsymbol{A}^{(1)} \ldots \times_{d} \boldsymbol{A}^{(d)}\right\|_{F}\\
+    \span && + \lambda\sum_{p,q=1}^{n}s_{pq}\norm{\mathbfcal{G}^{(p)}-\mathbfcal{G}^{(q)}}_{F}^{2} \\
+    &\text{s.t.} && \mathbfcal{G}^{(i)}\in\mathbb{R}_{+}^{r_1 \times r_2 \times \ldots \times r_d},~\forall~i\in[n] ,~\boldsymbol{A}^{(j)}\in \mathbb{R}_{+}^{n_j \times r_j},~\forall~j\in[d],
+    \end{aligned}
+\end{equation*}
+其中，$s_{pq}$代表了局部结构相似度图中第$p$个样本$\mathbfcal{X}^{(p)}$与第$q$个样本$\mathbfcal{X}^{(q)}$之间的相似度（可由\refsection{sec:graphreg}中介绍的方法计算），$\lambda$代表图正则的强度，而其它符号的意义均与\refsection{sec:linf}中相同。通过这样的方式，在原始数据的局部结构上相似的样本将会在低维空间中具有相似的特征表示，从而使被提取特征的质量得到进一步的提升。
+\end{enumerate}
+% \subsection{赋予CPUFS方法处理带缺失值数据的能力}
+% \esubsection{Extending CPUFS for Imcomplete Data}
+
+% \subsection{为CPUFS的\texorpdfstring{$\boldsymbol{U}$}{U}和\texorpdfstring{$\boldsymbol{V}$}{V}子问题设计更有效的解法}
+% \esubsection{Designing More Effective Algorithms for the $\boldsymbol{U}$ and $\boldsymbol{V}$ Subproblems in CPUFS}
+
+% \subsection{研发新型的基于张量优化的无监督特征选择方法}
+% \esubsection{Developing New Tensor Optimization-Based Unsupervised Feature Selection Methods}
+
+% \subsection{为\texorpdfstring{$\ell_\infty$}{L无穷}方法添加各种正则项}
+% \esubsection{Incorporating Regularizations into the $\ell_\infty$ Method}
+
+% \section{本章小结}
+% \esection{Summary of the Chapter}
+% 本章首先总结了本文所做的工作。随后，本章介绍了一些可行的未来研究方向，以供读者进一步进行相关研究。
+
+\afterpage{\null\newpage}\clearpage

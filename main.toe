@@ -1,0 +1,74 @@
+\contentsline {chapter}{ \numberline {Chapter\nobreakspace {}1}Introduction }{1}{chapter.1}%
+\contentsline {section}{ \numberline {1.1}Research Backgrounds }{1}{section.1.1}%
+\contentsline {subsection}{ \numberline {1.1.1}Unsupervised Feature Selection }{3}{subsection.1.1.1}%
+\contentsline {subsection}{ \numberline {1.1.2}Unsupervised Feature Extraction }{3}{subsection.1.1.2}%
+\contentsline {section}{ \numberline {1.2}Related Work and Research Status }{4}{section.1.2}%
+\contentsline {subsection}{ \numberline {1.2.1}Filter-Based and Tensor Optimization-Based Unsupervised Feature Selection }{4}{subsection.1.2.1}%
+\contentsline {subsection}{ \numberline {1.2.2}Tensor Optimization-Based Non-Robust/Robust Unsupervised Feature Extraction }{6}{subsection.1.2.2}%
+\contentsline {section}{ \numberline {1.3}Research Motivation, Contents and Contributions }{8}{section.1.3}%
+\contentsline {subsection}{ \numberline {1.3.1}Tensor Optimization-Based Unsupervised Feature Selection }{8}{subsection.1.3.1}%
+\contentsline {subsection}{ \numberline {1.3.2}Tensor Optimization-Based Robust Unsupervised Feature Extraction }{9}{subsection.1.3.2}%
+\contentsline {section}{ \numberline {1.4}Outline of the Dissertation }{10}{section.1.4}%
+\contentsline {section}{ \numberline {1.5}Summary of the Chapter }{11}{section.1.5}%
+\contentsline {chapter}{ \numberline {Chapter\nobreakspace {}2}Notations and Preliminaries }{13}{chapter.2}%
+\contentsline {section}{ \numberline {2.1}Notations }{13}{section.2.1}%
+\contentsline {subsection}{ \numberline {2.1.1}Notations Related to Matrices }{13}{subsection.2.1.1}%
+\contentsline {subsection}{ \numberline {2.1.2}Notations Related to Tensors }{15}{subsection.2.1.2}%
+\contentsline {subsection}{ \numberline {2.1.3}Miscellaneous }{15}{subsection.2.1.3}%
+\contentsline {section}{ \numberline {2.2}Backgrounds }{16}{section.2.2}%
+\contentsline {subsection}{ \numberline {2.2.1}Nonnegative Matrix Factorization }{16}{subsection.2.2.1}%
+\contentsline {subsection}{ \numberline {2.2.2}(Nonnegative) Tensor CP and Tucker Decompositions }{16}{subsection.2.2.2}%
+\contentsline {subsection}{ \numberline {2.2.3}The $\ell _{2}$ Method for Tensor Optimization-Based Unsupervised Feature Extraction }{18}{subsection.2.2.3}%
+\contentsline {subsection}{ \numberline {2.2.4}Determination of the Dimensionality of the Core Tensor in Tensor Tucker Decomposition }{19}{subsection.2.2.4}%
+\contentsline {subsection}{ \numberline {2.2.5}Graph Regularization }{20}{subsection.2.2.5}%
+\contentsline {subsection}{ \numberline {2.2.6}Assumptions on Data and Design of Pseudo-Label Matrix in Unsupervised Feature Selection }{21}{subsection.2.2.6}%
+\contentsline {section}{ \numberline {2.3}Summary of the Chapter }{22}{section.2.3}%
+\contentsline {chapter}{ \numberline {Chapter\nobreakspace {}3}The CPUFS and CPUFSnn Methods: Two Tensor Optimization-Based Unsupervised Feature Selected Methods }{23}{chapter.3}%
+\contentsline {section}{ \numberline {3.1}The Mathematical Optimization Model of the CPUFS Method }{23}{section.3.1}%
+\contentsline {subsection}{ \numberline {3.1.1}Design of Tensor Data-Oriented Linear Classifier }{23}{subsection.3.1.1}%
+\contentsline {subsection}{ \numberline {3.1.2}Design of Tensor Data-Oriented Feature Selection Matrix }{23}{subsection.3.1.2}%
+\contentsline {subsection}{ \numberline {3.1.3}The Mathematical Optimization Model of the CPUFS Method }{24}{subsection.3.1.3}%
+\contentsline {section}{ \numberline {3.2}The Optimization Algorithm for Solving the CPUFS Method and Its Theoretical Analysis }{26}{section.3.2}%
+\contentsline {subsection}{ \numberline {3.2.1}Relaxations for the CPUFS Method }{26}{subsection.3.2.1}%
+\contentsline {subsection}{ \numberline {3.2.2}Design of the Optimization Algorithm }{27}{subsection.3.2.2}%
+\contentsline {subsection}{ \numberline {3.2.3}Convergence Analysis of the Optimization Algorithm }{31}{subsection.3.2.3}%
+\contentsline {subsection}{ \numberline {3.2.4}Complexity Analysis of the Optimization Algorithm }{34}{subsection.3.2.4}%
+\contentsline {section}{ \numberline {3.3}The Mathematical Optimization Model of the CPUFSnn Method and the Optimization Algorithm for Solving the CPUFSnn Method with Consise Theoretical Analysis }{35}{section.3.3}%
+\contentsline {section}{ \numberline {3.4}The Extension of the CPUFS Method to Higher-Order Cases }{36}{section.3.4}%
+\contentsline {section}{ \numberline {3.5}Summary of the Chapter }{36}{section.3.5}%
+\contentsline {chapter}{ \numberline {Chapter\nobreakspace {}4}The $\ell _{1}$ and $\ell _{\infty }$ Methods: Two Tensor Optimization-Based Robust Unsupervised Feature Extraction Methods }{39}{chapter.4}%
+\contentsline {section}{ \numberline {4.1}The Mathematical Optimization Models of the $\ell _{1}$ and $\ell _{\infty }$ Methods }{39}{section.4.1}%
+\contentsline {subsection}{ \numberline {4.1.1}The Mathematical Optimization Models of the $\ell _{1}$ Method }{39}{subsection.4.1.1}%
+\contentsline {subsection}{ \numberline {4.1.2}The Mathematical Optimization Models of the $\ell _{\infty }$ Method }{40}{subsection.4.1.2}%
+\contentsline {section}{ \numberline {4.2}The Optimization Algorithm for Solving the $\ell _{\infty }$ Method and Its Theoretical Analysis }{40}{section.4.2}%
+\contentsline {subsection}{ \numberline {4.2.1}Design of the Optimization Algorithm }{40}{subsection.4.2.1}%
+\contentsline {subsection}{ \numberline {4.2.2}Convergence Analysis of the Optimization Algorithm }{43}{subsection.4.2.2}%
+\contentsline {subsection}{ \numberline {4.2.3}Complexity Analysis of the Optimization Algorithm }{45}{subsection.4.2.3}%
+\contentsline {section}{ \numberline {4.3}The Optimization Algorithm for Solving the $\ell _{1}$ Method with Concise Theoretical Analysis }{46}{section.4.3}%
+\contentsline {section}{ \numberline {4.4}Summary of the Chapter }{46}{section.4.4}%
+\contentsline {chapter}{ \numberline {Chapter\nobreakspace {}5}Numerical Simulations and Anslysis on Experimental Results }{49}{chapter.5}%
+\contentsline {section}{ \numberline {5.1}Experimental Setups }{49}{section.5.1}%
+\contentsline {subsection}{ \numberline {5.1.1}Environmental Settings and Dataset Introduction }{49}{subsection.5.1.1}%
+\contentsline {subsection}{ \numberline {5.1.2}Evaluation Metrics and Evaluation Methodology }{51}{subsection.5.1.2}%
+\contentsline {subsection}{ \numberline {5.1.3}Comparative Methods and Parameter Settings }{52}{subsection.5.1.3}%
+\contentsline {section}{ \numberline {5.2}Experiments on the CPUFS and CPUFSnn Methods }{53}{section.5.2}%
+\contentsline {subsection}{ \numberline {5.2.1}Experiment 1: Performance Comparison }{53}{subsection.5.2.1}%
+\contentsline {subsection}{ \numberline {5.2.2}Experiment 2: Parameter Sensitivity Analysis }{56}{subsection.5.2.2}%
+\contentsline {subsection}{ \numberline {5.2.3}Experiment 3: Optimization Efficiency Analysis }{56}{subsection.5.2.3}%
+\contentsline {subsection}{ \numberline {5.2.4}Experiment 4: Convergence Analysis }{57}{subsection.5.2.4}%
+\contentsline {subsection}{ \numberline {5.2.5}Experiment 5: Visualization of the Selected Features }{58}{subsection.5.2.5}%
+\contentsline {section}{ \numberline {5.3}Experiments on the $\ell _{\infty }$ and $\ell _{\infty }$ Methods }{59}{section.5.3}%
+\contentsline {subsection}{ \numberline {5.3.1}Experiment 1: Performance Comparison }{59}{subsection.5.3.1}%
+\contentsline {subsection}{ \numberline {5.3.2}Experiment 2: Optimization Efficiency Analysis }{63}{subsection.5.3.2}%
+\contentsline {subsection}{ \numberline {5.3.3}Experiment 4: Convergence Analysis }{64}{subsection.5.3.3}%
+\contentsline {section}{ \numberline {5.4}Summary of the Chapter }{64}{section.5.4}%
+\contentsline {chapter}{ \numberline {Chapter\nobreakspace {}6}Conclusion and Future Work }{67}{chapter.6}%
+\contentsline {section}{ \numberline {6.1}Conclusion of the Dissertation }{67}{section.6.1}%
+\contentsline {section}{ \numberline {6.2}Future Research Directions }{67}{section.6.2}%
+\contentsline {subsection}{ \numberline {6.2.1}Extending CPUFS for Imcomplete Data }{68}{subsection.6.2.1}%
+\contentsline {subsection}{ \numberline {6.2.2}Developing New Tensor Optimization-Based Unsupervised Feature Selection Methods }{68}{subsection.6.2.2}%
+\contentsline {subsection}{ \numberline {6.2.3}Incorporating Regularizations into the $\ell _\infty $ Method }{69}{subsection.6.2.3}%
+\contentsline {section}{ \numberline {6.3}Summary of the Chapter }{69}{section.6.3}%
+\contentsline {chapter}{Relevant Academic Achievements Completed During the Academic Period }{71}{chapter*.19}%
+\contentsline {chapter}{References}{80}{chapter*.20}%
+\contentsline {chapter}{Acknowledgements}{82}{chapter*.21}%

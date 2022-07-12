@@ -1,0 +1,245 @@
+%# -*- coding:utf-8 -*-
+\chapter{绪论}\label{chap:intro}
+\echapter{Introduction}
+\section{研究背景}
+\esection{Research Backgrounds}
+统计学习方法\ucite{李航2012统计学习方法}是当下研究的热点问题。此外，它还对人类社会的发展产生了极大的推动作用。例如，手写体识别技术\ucite{lecun1989handwritten}帮助人类得以借助机器来实现在各个领域的自动化；压缩感知技术\ucite{candes2005decoding}帮助人类高效且低损耗地在计算机中保留真实世界的信息。统计学习方法旨在从数据中学习。由于数据获取技术的高速发展，当下实际应用中的数据维度越来越高。然而， 高维数据分析中一个棘手且无法回避的问题就是所谓的“维度诅咒”\ucite{bellman1966dynamic}：随着数据维度的增高，统计学习的难度将会越来越大，且性能将会越来越差。作为阐释性的引子，考虑以下引理及例子（对于此处使用到的符号，请读者参考\refsection{sec:notation}）。
+\begin{lemma}[Beyer等人\ucite{beyer1999nearest}]\label{lemma:highdim}\kaishu
+考虑由$n$个$d$维样本点组成的数据集$\mathcal{D}=\{\boldsymbol{x}_{:1},\allowbreak\boldsymbol{x}_{:2},\ldots,\allowbreak\boldsymbol{x}_{:n}\}\subseteq\mathbb{R}^{d}$，其中$\boldsymbol{x}_{:i}$从任意数据分布$\mathcal{F}$采样，$\forall~ i=1,2,\ldots,n$。设$\boldsymbol{q}\in\mathbb{R}^{d}$为$d$维空间中的任意一点。若$\forall~ i=1,2,\ldots,n$，$\lim_{d\rightarrow\infty}\mathbb{V}\left(\frac{\norm{\boldsymbol{x}_{:i}-\boldsymbol{q}}_{2}}{\mathbb{E}\left(\norm{\boldsymbol{x}_{:i}-\boldsymbol{q}}_{2}\right)}\right)=0$，
+% \begin{equation*}
+%     \lim_{d\rightarrow\infty}\mathbb{V}\left(\frac{\norm{\boldsymbol{x}_{:i}-\boldsymbol{q}}_{2}}{\mathbb{E}\left[\norm{\boldsymbol{x}_{:i}-\boldsymbol{q}}_{2}\right]}\right)=0,~\forall~ i=1,2,\ldots,n,
+% \end{equation*}
+则随着$d\rightarrow +\infty$，
+\begin{equation*}
+    \frac{\max_{\boldsymbol{x}\in\mathcal{D}}\norm{\boldsymbol{x}-\boldsymbol{q}}_{2}}{\min_{\boldsymbol{x}\in\mathcal{D}}\norm{\boldsymbol{x}-\boldsymbol{q}}_{2}}\rightarrow_{\mathbb{P}}1.
+\end{equation*}
+\end{lemma}
+\reflemma{lemma:highdim}传达道，在满足某些关于数据分布$\mathcal{F}$的假设时，在超高维空间中所有$\mathcal{D}$中样本点到空间中任意点$\boldsymbol{q}$的距离都几乎是相等的！在这种情况下，$k$近邻分类器\ucite{李航2012统计学习方法}将变得极度不稳定：对$\boldsymbol{x}_{:i}$而言，所有属于$\mathcal{D}\setminus\{\boldsymbol{x}_{:i}\}$的点都几乎是他的最近邻点——这是无意义的。除此之外，高维数据还会来带诸如组合数爆炸\ucite{靳志宏2008物流调度与协调}，影响数值计算效率等诸多不良问题，坏处多多。本节再通过以下例子来更加直观地体会高维数据对统计学习带来的负面影响。
+
+% [Amini\ucite{200c}]
+\begin{example}\label{ex:highdim-reg}\kaishu
+    考虑由$n$个$d$维样本点组成的数据集$\mathcal{D}=\{(\boldsymbol{x}_{:1},y_{1}),\allowbreak\ldots,\allowbreak(\boldsymbol{x}_{:n},y_{n})\}\subseteq\mathbb{R}^{d}\times\mathbb{R}$，以及如下带噪声的线性回归模型$y_{i}=\bm{\beta}^{\top}\boldsymbol{x}_{:i}+w_{i}$，其中$y_{i}\in\mathbb{R}$为第$i$个样本的观测值，$\bm{\beta}\in\mathbb{R}^{d}$为回归参数向量，$\boldsymbol{x}_{:i}\in\mathbb{R}^{d}$为第$i$个样本的特征，而$w_{i}\sim\mathcal{N}(0,1)$为对应于第$i$个样本的标准高斯噪声。假设$n\gg d$，则从数据$\mathcal{D}$中学习回归参数向量$\bm{\beta}$的有效方法为最小二乘法，即如下优化问题
+    \begin{equation*}
+        \begin{aligned}
+            &\underset{\bm{\beta}}{\min}&& \norm{\boldsymbol{X}^{\top}\bm{\beta}-\boldsymbol{y}}_{2}^{2}.
+        \end{aligned}
+    \end{equation*}
+    上述优化问题为光滑凸优化问题，并且它有显式最优解
+    \begin{equation*}
+        \hat{\bm{\beta}}=\parenth{\boldsymbol{X}\boldsymbol{X}^{\top}}^{-1}\boldsymbol{X}\boldsymbol{y}.
+    \end{equation*}
+    然而，在高维情形时（即$d>n$），上述问题将急剧恶化。例如，由于在求最优解时需要对矩阵$\boldsymbol{X}\boldsymbol{X}^{\top}\in\mathbb{R}^{d\times d}$求逆，但是在$d>n$时，$\operatorname{rank}(\boldsymbol{X}\boldsymbol{X}^{\top})\leq n<d$，因而$\boldsymbol{X}\boldsymbol{X}^{\top}$不再可逆！故无法再利用上式求解！此外，哪怕对于无噪声情形（即$w_{i}$恒为$0$），也无法求得最优的参数，原因如下。在无噪声情形下，需要求解如下线性方程组
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            y_{1} &= x_{11}\beta_{1}+x_{21}\beta_{2}+\ldots+x_{d1}\beta_{d},\\
+            y_{2} &= x_{12}\beta_{1}+x_{22}\beta_{2}+\ldots+x_{d2}\beta_{d},\\
+            &\vdotswithin{=}\\
+            y_{n} &= x_{1n}\beta_{1}+x_{2n}\beta_{2}+\ldots+x_{dn}\beta_{d}.
+        \end{aligned}
+        \right.
+    \end{equation*}
+    然而，由线性代数理论\ucite{丘维声2002高等代数}，上述线性方程组是欠定的，因为它其中的决策变量个数$d$大于方程的个数$n$。这也就导致了上述线性方程组有无穷多解。真正的回归参数向量$\bm{\beta}^{*}$不可能从无穷多个解中被辨识出。
+\end{example}
+
+为了缓解高维特征带来的各种问题，特征选择与提取技术发挥了重要作用。特征选择旨在从高维特征中原封不动地选择出高质量的特征子集（通常基数很小），并同时滤除原有特征中的噪声及冗余；而特征提取旨在将原有的高维特征通过线性或非线性变换投影至低维子空间，并使得这些低维的数据表示可以很好地反应原有的数据特征，从而实现特征降维。这些降维技术削弱了“维度诅咒”的影响，从而为高维数据分析提供了极大的便利。特征选择与提取方法可以进一步分为三大类：有监督、半监督以及无监督特征选择与提取\ucite{solorio2020review,ang2015supervised,ghojogh2019feature}。在这其中，由于无监督特征选择与提取不需要使用数据中的标签作为引导，因而具有更广的适用性，但作为代价也更具挑战性。本文关注于无监督特征选择与提取问题。下面两节将分别介绍它们的相关背景。
+
+\subsection{无监督特征选择研究背景}
+\esubsection{Research Backgrounds of Unsupervised Feature Selection}
+无监督特征选择旨在在没有数据标签引导的情况下实现数据特征子集的高质量选取。进一步地，无监督特征选择方法可以再分为以下三种类型\ucite{综述1,综述2,综述3}：
+\begin{enumerate}
+    \item \textbf{包裹式：}包裹式特征选择方法旨在通过学习器来评估选择出来的特征的优劣程度，从而选择出针对某个学习器而言的最佳特征子集。
+    % 具有代表性的包裹式特征选择方法为递归特征消除\ucite{RFE}。递归特征消除通过在数据上训练学习器来从特征集合中筛选出相对于该学习器作用最大的特征，并将它从特征集合中消除，并继续在其余特征子集上重复上述过程，从而得到一个特征排序。但由于每一次评价特征子集都需要训练一次学习器，递归特征消除的计算花费会比较大。
+    \item \textbf{嵌入式：}嵌入式特征选择方法旨在在模型学习的过程中融合进特征选择，从而使得被选择的特征可以更好地适应某个学习模型。
+    % 具有代表性的嵌入式特征选择方法为最小绝对值收敛和选择算子\ucite{LASSO}。最小绝对值收敛和选择算子在最小二乘回归的目标函数上还融合了一项参数向量的$\ell_{1}$范数，从而实现了在最小二乘的过程中自动地进行特征选择。
+    \item \textbf{过滤式：}过滤式特征选择方法旨在直接根据数据的内在特性来选择高质量的特征，且被选择的特征与下游学习模型无关。
+    % 具有代表性的过滤式特征选择方法为方差过滤法\ucite{varthre}，即直接过滤掉那些方差较低的特征（或直接筛选出那些方差较高的特征）。方差过滤法的工作原理为，对于那些方差较小的特征，由于它们在不同样本之间的差异不明显导致它们不具有较强的判别性，从而应被视为冗余而滤去。此外，我们还可以从互信息\ucite{richert2013building}等其它角度来进行过滤式特征选择。
+\end{enumerate}
+
+从以上介绍中可以看到，相比于包裹式与嵌入式方法，过滤式方法直接通过数据的内在特性来选择特征，而非利用额外的学习器来评价被选择特征的质量或将特征选择融合进某个额外的学习器里，从而具有非常大的便利性以及更广的适用性。这样的优点使得过滤式无监督特征选择受到广泛的应用。下文将主要关注过滤式无监督特征选择。
+
+由于张量的大规模普及，开发面向张量的无监督特征选择方法成为了重要的任务。然而，遗憾的是，业内几乎找不到任何面向张量的无监督特征选择方法。本文旨在研发一套完善的基于张量优化的无监督特征选择方案，从而填补业内在面向张量的无监督特征选择这一领域的空白。
+
+\subsection{无监督特征提取研究背景}
+\esubsection{Research Backgrounds of Unsupervised Feature Extraction}
+无监督特征提取旨在在没有数据标签引导的情况下实现数据特征的高质量提取。由于张量的大规模普及，开发面向张量的无监督特征提取方法成为了重要的任务。与无监督特征选择不同，近年来，业内已经出现了一系列基于张量优化的无监督特征提取方法。主要地，非负张量Tucker分解\ucite{kolda2009tensor}常常作为这些方法的骨干模型出现，其中核心张量被视为被提取的低维特征。此外，基于张量优化的无监督特征提取还可以从张量主成分分析\ucite{lu2008mpca,lu2016tensor}与张量填充\ucite{ferlrtc}等角度出发研究。相比于基于矩阵优化的无监督特征提取方法，基于张量优化的无监督特征提取方法能够保留住张量中的结构信息，从而具有更好的效果。下文将主要关注基于张量优化的无监督特征提取。
+
+然而，在这些基于张量优化的无监督特征提取方法中，很少有方法关注到数据不确定性所带来的负面影响。在现实应用场景中，高维数据往往带有噪声和离群点，并且这些噪声和离群点会对特征提取的性能产生较大影响。因此不得对这些噪声与离群点坐视不管。此外，尽管有少数方法已经具备内置的抗噪机制，但它们仍然存在改进空间。本文旨在研发更加鲁棒的基于张量优化的无监督特征提取方法，从而进一步提升在噪声场景下的张量无监督特征提取的效果。
+
+\section{相关工作与研究现状}
+\esection{Related Work and Research Status}
+本节将介绍无监督特征选择方法以及基于张量优化的特征提取方法
+% \footnote{由于基于张量优化的特征提取工作数量较少，为了综述的充分性，我们在这一节综述的这些工作既包括了无监督的，也包括了有监督的。}
+。
+\subsection{无监督特征选择研究综述}\label{sec:review-ufs}
+\esubsection{Research Review for Unsupervised Feature Selection}
+本节将介绍无监督特征选择。首先介绍过滤式无监督特征选择方法，这些方法在过去的十年内是业内的研究热点与焦点；之后介绍当前业内唯一可考的基于张量优化的嵌入式无监督特征选择方法。
+
+% 具体而言，如果某一个特征在相似的样本点上差异不大，但是在相异的样本点上有较大差异，那么这个特征将会被认为有很高的判别性。
+
+近十年来，过滤式无监督特征选择技术在业内得到了很好的发展。这一领域具有代表性的工作综述如下。在无监督特征选择发展早期，He等人\ucite{lapscore}提出拉普拉斯评分法（Laplacian Score, LapScore），其通过评估各个特征保留数据局部几何结构的能力高低来进行特征选择；为了更好地保留数据的多簇结构特征，Cai等人\ucite{cai2010unsupervised}提出多簇特征选择方法（Multi-Cluster Feature Selection, MCFS），其首先通过谱分析来获得数据的内在聚类结构，而后使用基于$\ell_{1}$范数的稀疏回归来进行特征选择。随后，Nie等人\ucite{nie2010efficient}提出使用$\ell_{2,1}$范数对特征选择矩阵施加行稀疏正则，并开发了可证明收敛性的高效优化算法，从此掀起了基于$\ell_{2,1}$范数的特征选择方法的研究热潮。例如，Yang等人\ucite{udfs}在局部判别分析以及基于$\ell_{2,1}$范数的特征选择的基础上提出了无监督判别特征选择方法（Unsupervised Discriminative Feature Selection, UDFS），从而来选择那些最具判别性的特征；Hou等人\ucite{jelsr}在局部线性近似、稀疏回归以及基于$\ell_{2,1}$范数的特征选择的基础上提出了联合嵌入学习和稀疏回归的特征选择方法（Feature Selection via Joint Embedding Learning and Sparse Regression, JELSR），从而能更好地捕获数据的局部结构信息；Li等人\ucite{ndfs}在非负谱分析、伪标签回归以及基于$\ell_{2,1}$范数的特征选择的基础上提出了非负判别特征选择方法（Nonnegative Discriminative Feature Selection, NDFS），从而很好地利用了数据的局部结构信息及其非负本质来引导特征选择。为了进一步提升无监督特征选择在带噪声环境下的鲁棒性，Qian等人\ucite{rufs}在鲁棒非负矩阵分解\ucite{kong2011robust}、线性伪标签回归以及基于$\ell_{2,1}$范数的特征选择的基础上提出了鲁棒无监督特征选择方法（Robust Unsupervised Feature Selection, RUFS），从而能很好地应对数据中的噪声和离群点；Shi等人\ucite{rsfs}在谱分析、鲁棒谱回归以及基于$\ell_{2,1}$范数的特征选择的基础上提出了鲁棒谱分析无监督特征选择方法（Robust Spectral Analysis for Unsupervised Feature Selection, RSFS），从而能进一步提升特征选择的鲁棒性。此外，为了充分利用数据聚类信息，Han等人\ucite{socfs}在正交基聚类以及基于$\ell_{2,1}$范数的特征选择的基础上提出了同步正交基聚类与特征选择方法（Simultaneous Orthogonal Basis Clustering and Feature Selection, SOCFS），从而能够利用聚类中心实现更好的特征选择。在所有上述方法中，数据的局部结构信息（若有使用到）都为预先计算，而非通过对数据进行自适应学习得到。为了弥补这个缺陷，Du等人\ucite{fsasl}在数据的自适应相似度图学习以及基于$\ell_{2,1}$范数的特征选择的基础上提出了自适应结构学习无监督特征选择方法（Unsupervised Feature Selection with Adaptive Structure Learning, FSASL），从而能够自适应地捕获数据的局部结构信息；Nie等人\ucite{sogfs}基于与FSASL方法近乎同样的架构提出了结构图优化无监督特征选择方法（Structured Optimal Graph Feature Selection, SOGFS）；Li等人\ucite{urafs}在无关联回归、基于最大熵的数据自适应相似度图学习以及基于$\ell_{2,1}$范数的特征选择的基础上提出了基于广义无关联回归和自适应图的特征选择方法（Generalized Uncorrelated Regression with Adaptive Graph for Unsupervised Feature Selection, URAFS），从而能选择那些具有判别性但近乎无关的特征。此外，Zhu等人\ucite{cdlfs}另辟蹊径，提出了耦合字典学习无监督特征选择方法（Coupled Dictionary Learning for Unsupervised Feature Selection, CDLFS），其通过字典学习来重构数据，并使用字典学习模型的表示参数来建模数据分布，最后通过数据分布来选择特征；Guo等人\ucite{dgufs}在特征选择以及基于被选择特征的数据聚类的基础上提出了相关性引导的无监督特征选择方法（Dependence Guided Unsupervised Feature Selection, DGUFS），从而提升了数据、产生的伪标签以及被选择的特征三者之间的相关性。除了使用$\ell_{2,1}$范数以外，其它具有与$\ell_{2,1}$范数相似功能但性质更好的（拟）范数也被采用至无监督特征选择。例如，Nie等人\ucite{nie2020unsupervised}在数据的自适应相似度图学习以及基于$\ell_{2,0}$范数的特征选择的基础上提出了基于行稀疏约束和最优图的无监督特征选择方法（Unsupervised Feature Selection with Row-Sparsity Constraint and Optimized Graph, RSOGFS），从而进一步提升特征选择的精准度；Li等人\ucite{li2021sparse}受到主成分分析\ucite{wold1987principal}的启发提出了基于稀疏主成分分析的特征选择方法（Sparse Principal Component Analysis for Feature Selection, SPCAFS），其通过对主成分分析的投影矩阵施加基于$\ell_{2,p}$范数的稀疏正则来实现特征选择。
+
+然而，所有上述方法都是基于矩阵优化的。尽管它们实现起来都相对容易，然而作为代价，所有这些方法都会丢失张量的内在结构信息（因为它们会将张量向量化从而使得它们可处理）。这对于特征选择而言是不利的。
+% 相比之下，我们所提出的CPUFS方法采用了非负张量CP分解用于生成伪分类标签，并利用针对张量量身定制的线性分类器和特征选择矩阵来进行伪标签回归以及特征权重稀疏化，从而在整个特征选择过程中都全然保留了张量中的结构信息。
+本节接下来介绍当前业内唯一可考的基于张量优化的无监督特征选择方法。Su等人在低秩张量表示学习、数据的自适应相似度图学习以及基于$\ell_{2,1}$范数的特征选择的基础上提出了基于图正则的低秩张量表示方法（Graph Regularized Low-Rank Tensor Representation, GRLTR）。然而，尽管GRLTR是一种基于张量优化的无监督特征选择方法，但是在其具体实现中，张量的结构信息在向低维流形投影的过程中被丢失了。这是由于GRLTR在向低维流形投影时将张量展开成了矩阵，而这个过程破坏了张量的结构信息。但流形投影是其整个无监督特征选择过程中最重要的一步，因为该投影矩阵同时也是特征选择矩阵，其质量直接决定了特征选择的效果好坏。因而该方法存在一定的内在缺陷。此外，需要注意的是，GRLTR（如其文章\ucite{GRLTR}所述）为一种嵌入式无监督特征选择方法。
+% 与GRLTR相对比，我们的CPUFS方法在特征选择的全过程中均保留了数据结构：我们不仅使用非负张量CP分解来对张量产生伪标签，同时还设计了新的面向线性分类器以及特征选择矩阵。这样的缜密设计使得张量的结构信息在CPUFS中得到了很好的保留。
+
+
+\subsection{基于张量优化的特征提取研究综述}\label{sec:review-ufe}
+\esubsection{Research Review for Tensor Optimization-Based Feature Extraction}
+本节将介绍基于张量优化的特征提取。由于这些工作数量较少，因此为了综述的充分性，既综述无监督的方法，也综述有监督的方法。
+% 此外，由于特征提取与特征选择具有某种程度上的相似，因而虽然本小节综述的这些方法并非面向特征选择，但它们可能会对基于张量优化的特征选择方法的研发带来深层次的启发。
+
+% \section{\texorpdfstring{无监督特征提取中的$\ell_{1}$}{L1}与\texorpdfstring{$\ell_{2}$}{L2}模型的优化模型}
+% \esection{Optimization Models of the \texorpdfstring{$\ell_{1}$}{L1} and \texorpdfstring{$\ell_{2}$}{L2} Methods in Unsupervised Feature Extraction}
+
+本节首先综述基于张量优化的非鲁棒特征提取方法。最早的面向张量的特征提取方法大致可以追溯到Yan等人\ucite{yan2005discriminant}提出的张量表示判别分析方法（Discriminant Analysis with Tensor Representation, DATER），其将线性判别分析（Linear Discriminative Analysis, LDA）\ucite{mika1999fisher}拓展到了张量形式，从而提升了线性判别分析对于张量的特征提取效果；类似地，Lu等人\ucite{lu2008mpca}提出的多线性主成分分析方法（Multilinear Principal Component Analysis, MPCA）将经典的主成分分析\ucite{wold1987principal}推广到了张量形式，从而得以有效地从张量中提取特征；Idaji等人\ucite{2017HOSRDA}提出的高阶谱回归判别分析方法（Higher-Order Spectral Regression Discriminant Analysis, HOSRDA）将谱回归判别分析（Spectral Regression Discriminant Analysis, SRDA）\ucite{cai2007srda}拓展到了张量形式，从而能使其更好地适应张量。
+% 之后，Phan和Cichocki\ucite{2010TDFE}提出对张量Tucker分解的参数矩阵施加正交或非负约束并开发了高效的求解算法。这些模型在图像数据以及脑电波数据上取得了很好的效果。
+除以上的经典拓展方法以外，基于张量分解的特征提取方法也在业内受到了广泛关注，并且在近十年内得到了快速发展。例如，Jukic等人\ucite{2013MaxMutInfo}提出的基于互信息的张量分解方法（Mutual Information-Based Tensor Decomposition, MITD）将互信息最大化融合进张量分解，从而得以捕获张量中的高阶统计信息；Li等人\ucite{2016MR-NTD}在非负Tucker分解和图正则的基础上提出了基于流形正则的非负Tucker分解方法（Manifold Regularization-Nonnegative Tucker Decomposition, MR-NTD），从而能够在从张量中提取特征的同时很好地保留张量的局部几何结构信息；Ju等人\ucite{ju2017vectorial}提出的张量贝叶斯向量化降维方法（Tensor Bayesian Vectorial Dimension Reduction, TBV-DR）在贝叶斯分析的框架下将张量表示成一些具有同样阶数的张量基的线性组合，并且用这些线性组合的表示系数来作为降维后的低维数据表示；Yin和Ma\ucite{2019LELLE-NTD}提出的基于局部线性嵌入的非负Tucker分解方法（Locally Linear Embedding-Based Nonnegative Tucker Decomposition, LLE-NTD）和基于拉普拉斯特征图的非负Tucker分解方法（Laplacian Eigenmaps-Based Nonnegative Tucker Decomposition, LE-NTD）分别使用了局部线性嵌入（Locally Linear Embedding, LLE）\ucite{LLE}和拉普拉斯特征图（Laplacian Eigenmaps, LE）\ucite{LapE}作为正则项来提升非负张量Tucker分解的性能；Shi等人\ucite{2019TDVM}在张量缺失值填充以及特征方差最大化的基础上提出了基于特征方差最大化的低秩张量分解方法（Low-Rank Tensor Decomposition with Feature Variance Maximization, TDVM），从而得以在张量有缺失值的情况下仍然能从中有效地提取特征。此外，基于张量填充技术的特征提取方法也在最近取得了一系列的成功。例如，Fu等人\ucite{ferlrtc}提出的基于低秩张量填充的人脸表情识别方法（Facial Expression Recognition via Low-Rank Tensor Completion, FERLrTC）通过对张量Tucker分解的参数矩阵施加低秩正则以及对张量Tucker分解的核心张量施加稀疏正则构建了基于张量Tucker分解的低秩表示模型，并成功地将其用应于2D+3D人脸表情识别。
+
+然而，尽管上述方法都在张量上取得了较好的效果，但是它们都没有考虑到数据中的噪声等其它因素带来的负面影响。事实上，数据噪声对特征提取的影响不容小觑。为了增强张量特征提取的鲁棒性，有少数学者提出了一些基于张量$\ell_{1}$范数或其它范数的特征提取方法，从而得以更加鲁棒地从张量中提取特征。本节接下来综述这些方法。Pang等人\ucite{L1Tucker2}提出的基于$\ell_{1}$范数的张量分析方法（$\ell_{1}$-Norm-Based Tensor Analysis, TPCA-$\ell_{1}$）将广义低秩矩阵估计方法（Generalized Low Rank Approximations of Matrices, GLRAM）\ucite{ye2005generalized}（尽管该方法用于矩阵估计，但Pang等人是用一种张量的观点来看待的）中的张量Frobenius范数替换为了张量$\ell_{1}$范数，从而能较好地抑制数据中的噪声与离群点所带来的负面影响；在此基础上，Markopoulos等人\ucite{2018ExaL1Tucker}为秩-$1$情况下的TPCA-$\ell_{1}$方法设计了两种高效的优化算法；此外，类似地，Markopoulos等人\ucite{2018L1HOSVD,2020L1HOOI,2019L1Tucker}还分别将张量$\ell_{1}$范数应用到了高阶奇异值分解（Higher-Order Singular Value Decomposition, HOSVD）\ucite{de2000multilinear}以及高阶正交迭代（Higher Order Orthogonal Iteration, HOOI）\ucite{de2000best}当中，并开发了相应的优化算法；Zhang和Ding\ucite{2013RTD}提出的鲁棒张量Tucker分解方法（Robust Tucker Tensor Decomposition, RTD）将正交Tucker分解中的张量Frobenius范数替换为了张量$\ell_{1}$范数，从而提升了正交Tucker分解对数据噪声的鲁棒性；在此基础之上，Cao等人\ucite{2015RTC}成功地将RTD方法应用到了鲁棒人脸聚类当中。除上述方法外，基于鲁棒主成分分析（Robust Principal Component Analysis, RPCA）的张量特征提取方法也在最近吸引了较大的关注。例如，Lu等人\ucite{lu2019tensor}提出的张量鲁棒主成分分析方法（Tensor Robust Principal Component Analysis, TRPCA）使用张量$\ell_{1}$范数将基于矩阵优化的鲁棒主成分分析方法\ucite{cand2011robust}推广到了张量形式，从而得以剥离张量中的噪声与离群点以提升特征提取的鲁棒性；Zhou和Feng\ucite{2017ORTPCA}提出的离群点鲁棒张量主成分分析（Outlier-Robust Tensor PCA, OR-TPCA）将TRPCA方法中施加在噪声分量上的张量$\ell_{1}$范数替换为了张量$\ell_{2,1}$范数，从而进一步提升了特征提取对数据离群点的鲁棒性。最近，Chachlakis等人\ucite{chachlakis2021dynamic}在基于张量$\ell_{1}$范数的增量式张量Tucker分解的基础上提出了动态$\ell_{1}$-Tucker方法（Dynamic $\ell_{1}$-Tucker, D-$\ell_{1}$-Tucker），其优势在于能够在处理数据流形式的张量时很好地抑制数据中的噪声与离群点所带来的负面影响。
+% 总体而言，这类鲁棒特征提取的文献仍较少。
+
+% 然而，尽管本小节综述的模型相比前一小节的更为鲁棒，然而它们或多或少仍然存在改进空间。例如，许多模型采用张量$\ell_{1}$范数来抑制数据噪声。而$\ell_{1}$范数分配给不同样本点的权重其实是相同的。直观上来讲，我们应该更关注于那些拟合误差较大的样本。
+
+% 除了基于张量Tucker分解以外，张量特征提取还可以从其它角度出发进行实现，例如高阶判别分析\ucite{yan2005discriminant,zhou2018probabilistic,zhang2011tensor,tao2008tensor,tao2017tensor}（拓展线性判别分析（LDA）\ucite{mika1999fisher}至张量形式），高阶主成分分析\ucite{lu2008mpca,shi2015semi,lu2016tensor,lu2019tensor,fan2014modified}（拓展主成分分析（PCA）\ucite{wold1987principal}至张量形式），张量填充\ucite{liu2012tensor,jain2014provable,liu2015generalized,liu2014trace,zhao2015bayesian,hu2016twist,han2018generalized}（拓展矩阵填充\ucite{candes2009exact}至张量形式）等等。但由于这些方法与本文提出的算法并不具有较强的联系，我们这里不再做详细的综述。
+
+\section{研究动机、内容及贡献}\label{sec:motivation}
+\esection{Research Motivation, Contents and Contributions}
+本节介绍本文的研究动机所在，以及阐述研究的主要内容与贡献。
+\subsection{基于张量优化的无监督特征选择}\label{sec:motiv-ufs}
+\esubsection{Tensor Optimization-Based Unsupervised Feature Selection}
+随着数据采集技术的进步，张量以各种形式，例如图像、视频、社交网络、功能磁共振成像以及多通道脑电图等等，广泛地出现在了各种现实应用场景中。张量天然带有结构信息，并且这些信息或会对无监督特征选择带来帮助。尽管如此，由\refsection{sec:review-ufs}中的相关工作综述中可以看到，几乎所有的无监督特征选择方法都是基于矩阵优化的。然而，这样的方法将会作为预处理的一部分将张量向量化，然后在已向量化的数据上进行特征选择。这样的做法虽然能带来模型与优化的简易性，但是作为代价，张量天然带有的数据结构也就被破坏了。除此之外，文献中几乎无法找到基于张量优化的无监督特征选择方法，并且业内唯一可考的该类型方法GRLTR\ucite{GRLTR}又存在一定的内在缺陷。因而，开发一套完善的基于张量优化的无监督特征选择方案迫在眉睫。
+% 尽管如此，
+
+为了突破上述限制，本文另辟蹊径，首先提出了基于非负张量CP分解的无监督特征选择方法（Nonnegative Tensor CP Decomposition-Based Unsupervised Feature Selection, CPUFS）。CPUFS方法可以实现从三阶张量无监督地选择特征并能完好地保留其内在结构，并且CPUFS方法可以被很容易地扩展到更高阶形式（本文将在\refsection{sec:CPUFS-extend}具体阐释拓展的方法）。具体贡献如下：
+\begin{enumerate}
+    \item 在方法设计方面，本文采用了基于图正则\ucite{cai2010graph}的非负张量CP分解技术\ucite{carroll1970analysis}来为张量产生伪标签，并设计了新颖的面向张量的线性分类器、特征选择矩阵以及特征选择机制。以这种方式，在整个特征选择的全过程中，张量的结构信息都被完好地保留了下来。
+    \item 在求解所提出的CPUFS方法方面，本文提出了一种具有理论收敛性保证的高效迭代优化算法。除此之外，该优化算法的计算复杂度与特征数量仅呈线性关系，从而保证了整个特征选择过程的效率。
+    \item 为了进一步利用输入张量和生成的伪标签的非负性，本文还提出了CPUFS方法的变体——基于非负张量CP分解的非负无监督特征选择方法（Nonnegative Tensor CP Decomposition-Based Nonnegative Unsupervised Feature Selection, CPUFSnn）。CPUFSnn方法对线性分类器施加了非负约束，从而能够利用输入张量和伪标签的非负本质进一步提升无监督特征选择的性能。
+    \item 在实验部分，本文在十个真实世界基准数据集中测试了CPUFS和CPUFSnn方法，并与前沿的无监督特征选择方法进行比较。实验结果表明，CPUFS和CPUFSnn方法优于前沿的无监督特征选择方法，并展现了显著的性能提升。此外，本文还研究了CPUFS方法的参数灵敏度、运行时间、收敛速度以及其所选特征的分布情况。
+    % 与\refsection{sec:review-ufs}中综述的方法相比，CPUFS和CPUFSnn方法在整个特征选择过程中都全然保留了张量中的结构信息。这是其优势所在。
+\end{enumerate}
+% \begin{enumerate*}[label=(\arabic*)]
+% % \begin{enumerate}
+%     \item \textbf{我们采用了基于图正则\ucite{cai2010graph}的非负张量CP分解技术\ucite{carroll1970analysis}来为张量产生伪标签。}由于采用了非负张量CP分解来产生伪标签，张量的数据结构被很好的保留了下来。此外，根据图正则理论\ucite{cai2010graph}，在几何结构上相似的数据样本的伪标签将被图正则迫使至尽可能保持一致，而这进一步提升了伪标签的质量。
+%     \item \textbf{我们设计了新颖的面向张量的线性分类器和特征选择矩阵，以在实现伪标签回归和特征选择的同时保留张量的数据结构。}新设计的线性分类器具有多个参数矩阵，并且它被直接定义在原始的张量上（而非向量化后的向量数据上），从而完好地保留了张量的数据结构。相应地，新设计的特征选择矩阵直接基于新设计的线性分类器设计，从而继承了线性分类器中所保留的数据结构信息。
+% \end{enumerate*}
+
+    % 采用了非负张量CP分解用于生成伪分类标签，并利用针对张量量身定制的线性分类器和特征选择矩阵来进行伪标签回归以及特征权重稀疏化，从而
+    % 此外，与GRLTR\ucite{GRLTR}相对比，我们的CPUFS方法在特征选择的全过程中均保留了数据结构：我们不仅使用非负张量CP分解来对张量产生伪标签，同时还设计了新的面向线性分类器以及特征选择矩阵。这样的缜密设计使得张量的结构信息在CPUFS中得到了很好的保留。
+
+% 在我们的知识范围内，这是基于张量分解技术的无监督特征选择的第一个工作。尽管从基于矩阵优化的无监督特征选择扩展到基于张量优化的无监督特征选择看似是直接且平凡的，但由于以下原因，这其中的挑战性远非寻常。
+% \begin{enumerate*}[label=(\arabic*)]
+%     \item \textbf{在整个特征选择过程的每个部分中都保留张量的结构信息并非易事}。一个小部分中不经意间的疏忽就会直接导致不必要的信息损失\footnote{例如在\refsection{sec:review-ufs}综述到的基于图正则的低秩张量表示方法\ucite{GRLTR}就忽略了在向流形投影的过程中保留张量的结构信息，并因此丢掉了有用的信息。}。我们认识到了在整个特征选择过程的每个部分中都保留张量的结构信息的重要性和必要性，并因此采用了非负张量CP分解以及提出了新的面向张量的线性分类器和特征选择矩阵来实现这件事。
+%     \item \textbf{线性分类器的设计需要仔细斟酌}。不同于现有的方法（即，将张量向量化后进行伪标签回归），我们设计了一种新的面向张量的线性分类器。该线性分类器直接在张量上定义，并包含多个参数矩阵，从而可以保留下张量的数据结构信息。
+%     \item \textbf{特征选择矩阵的设计具有很大的挑战性}。如上所述，新设计的线性分类器包含多个参数矩阵。因此，我们希望我们的特征选择矩阵能够实现
+%     \begin{enumerate*}
+%         \item 将这些参数矩阵都集成在一起，
+%         \item 继承这些参数矩阵中保留的张量的结构信息，以及
+%         \item 作为用以排序特征的特征重要性权重。
+%     \end{enumerate*}
+%     这是一个很难的问题。为了解决这个难题，我们设计了新的面向张量的特征选择矩阵来实现上述三点。此外，我们设计的特征选择矩阵可以被轻松地扩展到更高阶形式。
+% \end{enumerate*}
+
+\subsection{基于张量优化的鲁棒无监督特征提取}
+\esubsection{Tensor Optimization-Based Robust Unsupervised Feature Extraction}
+透过\refsection{sec:review-ufe}的相关工作综述可以发现，与无监督特征选择不同，对于面向张量的无监督特征提取，业内已经有许多较好的解决方案。然而，大多数方法并没有考虑到数据中的噪声与离群点所带来的负面影响。事实上，数据噪声对于特征提取的影响不容小觑。此外，尽管已经有少数方法具备内在的抗噪机制，但它们或多或少仍然存在改进空间。例如，许多方法采用张量$\ell_{1}$范数来抑制数据噪声，而$\ell_{1}$范数分配给不同样本点的权重其实是相同的。直观上来讲，应该更关注于那些具有更大拟合误差的样本。
+% 尽管已经有少数方法对数据中的噪声与离群点具有一定的路傍溪，但又或多或少仍然存在改进空间。
+
+% ，并且有一些研究已经在考虑如何应对数据中的噪声与离群点。然而，尽管这些具有抗噪机制的模型具有相对更好的鲁棒性，然而它们或多或少仍然存在改进空间。例如，许多模型采用张量$\ell_{1}$范数来抑制数据噪声，而$\ell_{1}$范数分配给不同样本点的权重其实是相同的。直观上来讲，我们应该更关注于那些拟合误差较大的样本。
+
+为了突破上述限制，在文献\ucite{zhzhou2018}的基础上，本文分别提出了基于$\ell_{1}$范数和$\ell_{\infty}$范数的鲁棒张量Tucker分解的两种方法（$\ell_{1}$方法和$\ell_{\infty}$方法）。具体贡献如下：
+\begin{enumerate}
+    \item 受到机器学习理论\ucite{Goodfellow2016}以及相关工作的启发，本文首先提出了一种基于$\ell_1$范数的非负张量Tucker分解方法（简称$\ell_1$方法），用以提升在噪声环境下的特征提取性能
+    % \footnote{需要注意的是，尽管\refsection{sec:review-ufe}中有少数方法采用张量$\ell_1$范数以提升特征提取的鲁棒性，但它们并非基于非负张量Tucker分解的框架。然而$\ell_1$方法是在非负张量Tucker分解的框架下实现的，因而是一种创新。}
+    。由于$\ell_{1}$方法将所有数据样本的Tucker分解拟合误差之和作为其目标函数，因而其在一定程度上抑制了数据中的噪声与离群点所带来的负面影响。
+    \item 在$\ell_{1}$方法的基础上，受到鲁棒优化理论的启发，本文还提出了一种基于$\ell_\infty$范数的非负张量Tucker分解方法（简称$\ell_\infty$方法），用以进一步提升特征提取的鲁棒性。在鲁棒优化理论中\ucite{ben2009robust}，处理数据不确定性的一种有效方法是考虑最坏情况下的目标函数。$\ell_{\infty}$方法的关键之处是通过优化（控制住）所有样本中的最大Tucker分解拟合误差来抑制由数据不确定性引起的负面影响，从而使得特征提取在面对带噪声与离群点的数据时更加鲁棒。
+    \item 由于$\ell_{1}$与$\ell_{\infty}$方法的目标函数的非光滑性，它们的优化算法设计极具挑战。为了解决这个难题，本文基于二阶锥规划理论\ucite{alizadeh2003second}，首先为$\ell_{1}$方法设计了一种具有理论收敛性保证的有效迭代优化算法，并分析了它的计算复杂度。在此基础上，本文为$\ell_{\infty}$方法也设计了类似的优化算法，并进行了理论上的收敛性分析与计算复杂度分析。
+    \item 在实验部分，本文在三个真实世界基准数据集上设计了大量的噪声场景，并通过在这些噪声场景下的图像分类和人脸识别任务测试了所提出的$\ell_{1}$和$\ell_{\infty}$方法的性能。实验结果表明，与传统的基于$\ell_{2}$范数的方法以及其它六种经典的无监督特征提取方法相比，$\ell_{\infty}$方法在绝大多数情况下均表现最佳，而$\ell_{1}$方法也能够在某些数据集上表现优异。
+\end{enumerate}
+
+% 本工作在本文作者的师兄周哲豪的工作基础\ucite{zhzhou2018}上改进而来。主要增加的贡献点为：
+% \begin{enumerate}
+%     \item 从理论上证明了所提出的用于求解$\ell_{1}$和$\ell_{\infty}$方法的优化算法的收敛性；
+%     \item 从理论上分析了所提出的用于求解$\ell_{1}$和$\ell_{\infty}$方法的优化算法的计算复杂度；
+%     \item 补充了大量的实验来充分说明$\ell_{1}$和$\ell_{\infty}$方法的有效性。
+% \end{enumerate}
+
+\section{论文组织结构}
+\esection{Outline of the Dissertation}
+本节介绍全文的组织及内容安排。全文共分为六个章节，具体内容如下。
+
+\textbf{\refchapter{chap:intro}是绪论}。具体来讲，首先介绍了无监督特征选择与提取的背景及意义，并对相关工作进行了详细而有条理的综述。
+% 此外\refchapter{chap:intro}还总结了已有的特征选择与特征提取的方法中的不足之处，并详细阐述了我们如何在技术上解决这一系列问题。
+之后，阐释了本文研究的动机以及贡献。最后，介绍了本文的组织结构。
+
+\textbf{\refchapter{chap:prelim}介绍符号以及预备知识}。具体来讲，将首先定义本文中使用到的符号。之后，将介绍一些必要的预备知识，如非负张量分解的概念及其优化模型以及图正则等等。
+
+\textbf{\refchapter{chap:cpufs}介绍基于张量优化的无监督特征选择方法}。具体而言，将首先给出CPUFS方法的优化模型。紧随其后，将给出用以求解CPUFS方法的高效优化算法，并对优化算法进行理论收敛性分析以及计算复杂度分析。之后，将给出CPUFSnn方法的优化模型，并基于CPUFS方法的优化算法及其理论分析为CPUFSnn方法设计优化算法并进行理论分析。最后，将给出CPUFS方法的更高阶形式的拓展方案。
+
+\textbf{\refchapter{chap:linf}介绍基于张量优化的鲁棒无监督特征提取方法}。具体来讲，将首先给出$\ell_{1}$方法的优化模型。紧随其后，将给出用以求解$\ell_1$方法的有效优化算法，并对优化算法进行理论收敛性分析以及计算复杂度分析。之后，将给出$\ell_{\infty}$方法的优化模型，并基于$\ell_1$方法的优化算法及其理论分析为$\ell_{\infty}$方法设计优化算法并进行理论分析。
+
+\textbf{\refchapter{chap:exp}是实验与结果分析}。具体而言，将首先介绍实验设置，如实验环境设置，采用的评价指标等等。之后，将展示本文在公开的真实世界基准数据集上将所提出的方法与当前业内前沿与经典的方法进行对比的实验结果，并对实验结果加以分析。此外，还将展示额外的实验结果，如参数的敏感度分析以及实验结果的可视化分析等等，来进一步展示本文所提出方法的优点及特点。
+
+\textbf{\refchapter{chap:conc}是总结与展望}。具体而言，将首先总结本文所完成的工作。之后，将对未来的研究方向进行展望，以便读者可以继本文之所研，进一步为基于张量优化的特征选择与提取领域做出创新。
+
+% \begin{figure}[!htb]
+% \resizebox{\linewidth}{!}{
+% \begin{tikzpicture}[
+% criteria/.style={text centered, text width=2cm, fill=gray!50},
+% attribute/.style={%
+%     grow=down, xshift=0cm,
+%     text centered, text width=2cm,
+%     edge from parent path={(\tikzparentnode.225) |- (\tikzchildnode.west)}},
+% first/.style    ={level distance=8ex},
+% second/.style   ={level distance=16ex},
+% third/.style    ={level distance=24ex},
+% fourth/.style   ={level distance=32ex},
+% fifth/.style    ={level distance=40ex},
+% level 1/.style={sibling distance=10em}]
+%     % Main Goal
+%     \node[anchor=south]{基于张量优化的无监督特征选择与鲁棒特征提取}
+%     [edge from parent fork down]
+
+%     % Criteria and Attributes
+%     child{node (crit1) [criteria] {\refchapter{chap:intro}}
+%         child[attribute,first]  {node {研究背景介绍}}
+%         child[attribute,second] {node {相关工作综述}}
+%         child[attribute,third]  {node {研究动机与本文贡献介绍}}
+%         child[attribute,fourth] {node {本文组织结构介绍}}}
+%     %
+%     child{node [criteria] {\refchapter{chap:prelim}}
+%         child[attribute,first]  {node {符号介绍}}
+%         child[attribute,second] {node {预备知识介绍}}}
+%     %
+%     child{node [criteria] {\refchapter{chap:cpufs}}
+%         child[attribute,first]  {node {CPUFS的优化模型}}
+%         child[attribute,second] {node {CPUFS的优化算法设计与分析}}     
+%         child[attribute,third]  {node {CPUFSnn的优化模型}}
+%         child[attribute,fourth] {node {CPUFSnn的优化算法设计与分析}}  
+%         child[attribute,fifth]  {node {CPUFS的更高阶形式拓展}}}
+%     %
+%     child{node [criteria] {\refchapter{chap:linf}}
+%         child[attribute,first]  {node {$ell_1$方法的优化模型}}
+%         child[attribute,second]  {node {$ell_\infty$方法的优化模型}}
+%         child[attribute,third] {node {$ell_\infty$方法的优化算法设计与分析}}
+%         child[attribute,fourth] {node {$ell_1$方法的优化算法设计与分析}}};
+%     %
+%     child{node [criteria] {\refchapter{chap:exp}}
+%         child[attribute,first]  {node {实验设置介绍}}
+%         child[attribute,second]  {node {CPUFS与CPUFSnn方法实验}}
+%         child[attribute,third] {node {$ell_1$与$ell_\infty$方法实验}}};
+%     %
+%     child{node [criteria] {\refchapter{chap:conc}}
+%         child[attribute,first]  {node {本文总结}}
+%         child[attribute,second] {node {未来研究方向畅想}}};
+% \end{tikzpicture}}
+% \caption{本文的组织结构图}
+% \end{figure}
+
+\section{本章小结}
+\esection{Summary of the Chapter}
+本章首先介绍了研究背景，然后对相关工作进行了详尽的综述。之后，本章阐明了研究动机、内容及贡献，并给出了本文的详细组织结构。
+
+\afterpage{\null\newpage}\clearpage
